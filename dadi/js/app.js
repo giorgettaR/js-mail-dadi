@@ -7,6 +7,13 @@
 const rollDiceButton = document.getElementById('rollDice');
 const cleanUpButton = document.getElementById('cleanUp');
 
+
+// message function
+
+function generateWinner(message, type) {
+    return `<h4 class="card-title msg-${type}">${message}</h4>`;
+}
+
 // dices variables
 
 const diceNumbers = ['one','two','three','four','five','six'];
@@ -26,23 +33,32 @@ rollDiceButton.addEventListener('click', function(){
     
     // show dices and communicate result
 
+    // create result box
     const resultBox = document.createElement('div');
     resultBox.classList.add('col-4','card','p-3');
     
+    // check winner and add result box title
+    
     if (userRoll > pcRoll){
         console.log('Your are the winner!');
-        resultBox.innerHTML = '<h4 class="card-title">You are the winner!</h4>';
+        resultBox.innerHTML = generateWinner('You are the winner!', 'win');
     } else if (userRoll === pcRoll) {
         console.log('It\' a draw!');
-        resultBox.innerHTML = '<h4 class="card-title">It\' a draw!</h4>';
+        resultBox.innerHTML = generateWinner('It\' a draw!', 'draw');
     } else {
         console.log('You loose!');
-        resultBox.innerHTML = '<h4 class="card-title">You loose!</h4>';
+        resultBox.innerHTML = generateWinner('You loose!', 'lose');
     }
 
-    // const dicesMiniBox = document.createElement('div');
-    // dicesMiniBox.innerHTML = 'Your dice\: <i class="fa-solid fa-dice-' +  $[userRoll] + '"></i>';
-    // resultBox.append(dicesMiniBox);
+    // create dice variable to show dice icon
+    const userRollDice = diceNumbers[userRoll - 1];
+    const pcRollDice = diceNumbers[pcRoll - 1];
+
+    console.log(userRollDice);
+    const dicesMiniBox = document.createElement('div');
+    dicesMiniBox.innerHTML = 'Your dice\: <i class="fa-solid fa-dice-' +  userRollDice + '"></i>';
+    dicesMiniBox.innerHTML += ' The opponent\'s dice\: <i class="fa-solid fa-dice-' +  pcRollDice + '"></i>';
+    resultBox.append(dicesMiniBox);
 
     resultsDiv.append(resultBox);
 })
@@ -51,5 +67,10 @@ rollDiceButton.addEventListener('click', function(){
 // get input click from user to clean up the results
 
 cleanUpButton.addEventListener('click', function() {
-    resultsDiv.innerHTML('');
+    resultsDiv.innerHTML = ('');
 })
+
+const template = document.getElementById('diceResult');
+const firstClone = template.content.cloneNode(true);
+
+document.querySelector('.results').appendChild(firstClone);
